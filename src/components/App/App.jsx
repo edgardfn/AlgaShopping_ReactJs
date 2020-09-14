@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import  { Wrapper, Container } from './App.styles'
 import AppHeader from '../AppHeader'
 import AppContainer from '../AppContainer'
+import CheckBox from '../../shared/CheckBox/CheckBox'
 
 function App () {
+
+    /* criar o estado: */
+    const [lettuce, setLettuce] = useState(true) /* get e set, true = inicial */
+    const [rice, setRice] = useState(false)
 
     return <Wrapper>
 
@@ -14,13 +19,24 @@ function App () {
             </AppHeader>
 
             <AppContainer 
-                left={<div style={{backgroundColor: 'red'}}>
-                    produtos disponiveis
+                left={<div>
+                    produtos disponiveis:
+
+                    <CheckBox 
+                        value= {lettuce}
+                        title= "Alface"
+                        onClick={() => setLettuce(!lettuce)}
+                    />
+                    <CheckBox 
+                        value= {rice}
+                        title= "Arroz"
+                        onClick={() => setRice(!rice)}
+                    />
                 </div>}
-                middle={<div style={{backgroundColor: 'green'}}>
+                middle={<div>
                    sua lista de compras 
                 </div>}
-                right={<div style={{backgroundColor: 'blue'}}>
+                right={<div>
                     estatisticas
                 </div>}
             />
