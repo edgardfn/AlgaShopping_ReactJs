@@ -13,6 +13,7 @@ function ShoppingList({ title, products, onToggle }) {
       {
         products.map(product => 
           <CheckBox 
+            key={product.id}
             value={product.checked} 
             title={product.name}
             onClick={() => onToggle(product.id, product.checked, product.name)}

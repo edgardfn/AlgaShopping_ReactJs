@@ -6,6 +6,7 @@ import AppContainer from '../AppContainer'
 import LineChart from '../../shared/LineChart'
 import ShoppingList from '../ShoppingList'
 import productsMock from '../../mocks/products.json';
+import extractPercentage from '../../utils/extractPercentage'
 
 function App () {
     const colors = ['#62CBC6', '#00ABAD', '#00858C', '#006073', '#004D61']
@@ -18,6 +19,10 @@ function App () {
     // criar estado dos produtos json:
     const [products, setProducts] = useState(productsMock.products)
     
+    //estado para exibir valores dos produtos selecionados:
+    const [totalPrice, setTotalPrice] = useState(0) // iniciar com 0
+
+
     // estado para aparecer lista somente se produto for marcado:
     const [selectedProducts, setSelectedProducts] = useState([])
     useEffect(() => {
@@ -26,7 +31,14 @@ function App () {
         setSelectedProducts(newSelectedProducts)
     }, [products]) // dependencia de products, sempre que products for alterado essa função irá ser executada
     
-
+    // Call back para retornar valores dos produtos, call back vai ser acinado comente quando o selectedProducts for alterado.
+    useEffect(() => {
+        const total = selectedProducts
+            .map(product => product.price)
+            .reduce((a, b) => a + b, 0)
+        
+        setTotalPrice(total)
+    }, [selectedProducts])
 
     /* na criação do compente executa a função */
     /* executar depois de 5 segundos */
@@ -88,17 +100,60 @@ function App () {
                     estatisticas
 
                     <LineChart 
-                        color={colors[0]} title="Saudável" percentage={80}
+                        color={colors[0]} 
+                        title="Saudável" 
+                        percentage={extractPercentage(
+                            selectedProducts.length,
+                            selectedProducts
+                                .filter(product => product.tags.includes('healthy'))
+                                .length
+                        )}
                     />
                     <LineChart 
-                        color={colors[1]}title="Não tão Saudável" percentage={20}
+                        color={colors[1]}
+                        title="Não tão Saudável" 
+                        percentage={extractPercentage(
+                            selectedProducts.length,
+                            selectedProducts
+                                .filter(product => product.tags.includes('junk'))
+                                .length
+                        )}
                     />
                     <LineChart 
-                        color={colors[2]}title="Limpeza" percentage={35}
+                        color={colors[2]}
+                        title="Limpeza" 
+                        percentage={extractPercentage(
+                            selectedProducts.length,
+                            selectedProducts
+                                .filter(product => product.tags.includes('cleaning'))
+                                .length
+                        )}
                     />
                     <LineChart 
-                        color={colors[3]}title="Outros" percentage={15}
+                        color={colors[3]}
+                        title="Outros" 
+                        percentage={extractPercentage(
+                            selectedProducts.length,
+                            selectedProducts
+                                .filter(product => product.tags.includes('others'))
+                                .length
+                        )}
                     />
+
+                    <div style={{marginTop:12}}>
+                            <h2 style={{ fontWeight: 400, fontSize: 12, color: '#00364A' }}>
+                                previsão de gastos:
+                            </h2>
+                            <div style={{ fontSize: 24 }}>
+                                { totalPrice.toLocaleString('pt-br', {
+                                    minimumFractionDigits: 2,
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }) }
+                            </div>
+                        
+
+                    </div>
                     
                 </div>}
             />
