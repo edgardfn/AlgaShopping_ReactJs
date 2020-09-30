@@ -1,11 +1,15 @@
 import React from 'react';
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CheckBox from '../../shared/CheckBox';
-//import { selectAllProducts } from '../../store/Products/Products.selectors';
+import { selectAllProducts, selectSelectedProducts } from '../../store/Products/Products.selectors';
 import { Wrapper, Title, Array } from './ShoppingList.styles';
 
-function ShoppingList({ title, products, onToggle }) {
-  // const productsFromRedux = useSelector(selectAllProducts) // utilização do estado.
+function ShoppingList({ title, onToggle, displayOnlySelected }) {
+  const products = useSelector(
+    displayOnlySelected 
+      ? selectSelectedProducts // se ela existir
+      : selectAllProducts 
+  )  
 
   /*
   useEffect(
@@ -13,7 +17,7 @@ function ShoppingList({ title, products, onToggle }) {
     [productsFromRedux]
   )
   */
- 
+
   return <Wrapper>
     <Title>
       {title} :
