@@ -1,8 +1,19 @@
 import React from 'react';
+//import { useSelector } from 'react-redux';
 import CheckBox from '../../shared/CheckBox';
+//import { selectAllProducts } from '../../store/Products/Products.selectors';
 import { Wrapper, Title, Array } from './ShoppingList.styles';
 
 function ShoppingList({ title, products, onToggle }) {
+  // const productsFromRedux = useSelector(selectAllProducts) // utilização do estado.
+
+  /*
+  useEffect(
+    () => console.table(productsFromRedux), 
+    [productsFromRedux]
+  )
+  */
+ 
   return <Wrapper>
     <Title>
       {title} :
@@ -28,4 +39,3 @@ function ShoppingList({ title, products, onToggle }) {
 }
 
 export default ShoppingList
-
